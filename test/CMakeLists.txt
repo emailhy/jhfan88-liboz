@@ -1,0 +1,49 @@
+SET(QT_USE_QTMAIN 1)
+INCLUDE(${QT_USE_FILE})
+
+INCLUDE_DIRECTORIES(
+    ${CMAKE_CURRENT_SOURCE_DIR}
+    ${CMAKE_CURRENT_BINARY_DIR}
+    ${PROJECT_SOURCE_DIR}
+    ${PROJECT_SOURCE_DIR}/util
+    ${OpenCV_INCLUDE_DIRS}
+    ${CAIRO_INCLUDE_DIR} )
+
+ADD_DEFINITIONS(/DQT_STATICPLUGIN)
+
+FILE(GLOB_RECURSE sources *.cpp *.c *.h *.ui *.qrc *.cu)
+IF(NOT WIN32)
+    LIST(REMOVE_ITEM sources pbuffer.h pbuffer.cpp)
+ENDIF()
+QT4_AUTO_WRAP(sources ${sources})
+SOURCE_GROUP_BY_PATH(${sources})
+#CUDA_ADD_EXECUTABLE(test ${sources})
+CUDA_ADD_EXECUTABLE(test WIN32 MACOSX_BUNDLE ${sources})
+
+IF(MSVC)
+    SET_TARGET_PROPERTIES(test
+        PROPERTIES
+        COMPILE_FLAGS "/FIstable.h /Yustable.h"
+        LINK_FLAGS "/NODEFAULTLIB:libcmt")
+
+    SET_SOURCE_FILES_PROPERTIES(stable.cpp
+        PROPERTIES
+        COMPILE_FLAGS "/Ycstable.h")
+ELSE(MSVC)
+    SET_TARGET_PROPERTIES(test
+        PROPERTIES
+        COMPILE_FLAGS "-include stable.h")
+ENDIF(MSVC)
+
+TARGET_LINK_LIBRARIES(test
+    liboz util
+    ${QT_LIBRARIES}
+    ${CUDA_npp_LIBRARY}
+    ${CUDA_curand_LIBRARY}
+    ${CUDA_cufft_LIBRARY}
+    ${CAIRO_LIBRARY} )
+
+INSTALL(TARGETS test
+    BUNDLE DESTINATION .
+    RUNTIME DESTINATION .
+    CONFIGURATIONS Debug Release)

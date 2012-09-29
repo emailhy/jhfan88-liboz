@@ -1,0 +1,10 @@
+.DS_Store
+build/
+build-*/
+*.pyc
+*.user
+*.suo
+*.sdf
+*.opensdf
+scripts/x64
+scripts/*.pdf

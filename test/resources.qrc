@@ -1,0 +1,16 @@
+<RCC>
+    <qresource prefix="/">
+        <file>images/add.png</file>
+        <file>images/arrow_down.png</file>
+        <file>images/arrow_up.png</file>
+        <file>images/delete.png</file>
+        <file>images/time_go.png</file>
+        <file>images/error.png</file>
+        <file>images/bug.png</file>
+        <file>images/star1.png</file>
+        <file>images/star2.png</file>
+        <file>images/star3.png</file>
+        <file>images/qmark.png</file>
+        <file>test_512x512.png</file>
+    </qresource>
+</RCC>
